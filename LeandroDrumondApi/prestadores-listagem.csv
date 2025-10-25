@@ -1,0 +1,4 @@
+nome;email;cpf;telefone;codigoPrestador;remuneracao;ativo;cep;logradouro;numero;especialidades
+João da Silva;joao@email.com;12345678900;123;101;2500.0;True;01001-000;Rua das Flores;123;Eletricista,Jardineiro
+Maria Oliveira;maria@email.com;98765432100;456;102;3200.0;True;20031-170;Av. Atlântica;456;Montador,Faxineira
+Carlos Souza;carlos@email.com;11122233344;789;103;1800.0;False;30140-071;Rua Minas Gerais;789;Piscineiro
