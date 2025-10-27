@@ -1,6 +1,7 @@
 package br.edu.infnet.LeandroDrumondApi.model.domain;
 
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -9,14 +10,13 @@ import java.util.List;
 @Table(name = "prestador_servico")
 public class PrestadorServico extends Pessoa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo_prestador", nullable = false, unique = true)
     private Long codigoPrestador;
 
     @ElementCollection
     @CollectionTable(
         name = "prestador_especialidade",
-        joinColumns = @JoinColumn(name = "codigo_prestador")
+            joinColumns = @JoinColumn(name = "prestador_id")
     )
     @Column(name = "especialidade")
     private List<String> especialidades;
@@ -31,7 +31,7 @@ public class PrestadorServico extends Pessoa {
 
     private BigDecimal remuneracao;
 
-    private boolean ativo;
+    private Boolean ativo;
 
     @Override
     public String toString() {
@@ -71,12 +71,13 @@ public class PrestadorServico extends Pessoa {
     public void setCodigoPrestador(Long codigoPrestador) {
         this.codigoPrestador = codigoPrestador;
     }
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
-    public void setAtivo(boolean ativo) {
+    public void setAtivo(Boolean  ativo) {
         this.ativo = ativo;
     }
+    public Boolean getAtivo() {return ativo;}
     public List<String> getEspecialidades() {
         return especialidades;
     }

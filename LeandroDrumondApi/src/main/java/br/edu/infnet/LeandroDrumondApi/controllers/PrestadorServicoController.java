@@ -2,14 +2,7 @@ package br.edu.infnet.LeandroDrumondApi.controllers;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.edu.infnet.LeandroDrumondApi.model.domain.PrestadorServico;
 import br.edu.infnet.LeandroDrumondApi.model.domain.service.PrestadorServicoService;
@@ -36,18 +29,15 @@ public class PrestadorServicoController {
 		
 		
 	}
-	
-    @PutMapping("/{id}")
-    public PrestadorServico Alterar (@PathVariable Integer id, @RequestBody PrestadorServico prestadorServico) {
-    	
-    	PrestadorServico prestadorAlterado = prestadorService.alterar(id, prestadorServico);
-    	
-    	return prestadorAlterado;
-    	
+
+    @PatchMapping("/{id}")
+    public PrestadorServico patch(@PathVariable Integer id,
+                                  @RequestBody PrestadorServico prestadorServico) {
+        return prestadorService.alterar(id, prestadorServico);
     }
-    
-    @DeleteMapping
-    public void Excluir (@PathVariable Integer id) {
+
+    @DeleteMapping("/{id}")
+    public void excluir(@PathVariable Integer id) {
     	
     	prestadorService.excluir(id);
     	
