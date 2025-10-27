@@ -143,12 +143,4 @@ public class PrestadorServicoService implements CrudService<PrestadorServico, In
             throw new IllegalArgumentException("Novo prestador não pode ter ID preenchido!");
         }
     }
-	
-
-
-
- 
- 
-
-
 }
