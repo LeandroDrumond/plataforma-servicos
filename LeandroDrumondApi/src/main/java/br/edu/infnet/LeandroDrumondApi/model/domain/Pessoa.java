@@ -1,7 +1,15 @@
 package br.edu.infnet.LeandroDrumondApi.model.domain;
 
+import jakarta.persistence.Embedded;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
+
+@MappedSuperclass
 public abstract class Pessoa {
-	
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
 	private Integer id;
 
 	private String nome;
@@ -28,6 +36,7 @@ public abstract class Pessoa {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
+    @Embedded
 	public Contato getContato() {
 		return contato;
 	}
