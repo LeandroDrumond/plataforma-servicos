@@ -74,11 +74,12 @@ public class PrestadorServicoLoader implements ApplicationRunner  {
                 prestador.setDataAtualizacao(new Date());
                 prestador.setEspecialidades(especialidades);
 
-              //  prestadorServicoService.incluir(prestador);
+                prestadorServicoService.incluir(prestador);
             }
         }
 
-        Collection<PrestadorServico> prestadores = prestadorServicoService.obterLista();
-        prestadores.forEach(System.out::println);
+      //  Collection<PrestadorServico> prestadores = prestadorServicoService.obterLista();
+       // prestadores.forEach(System.out::println);
+
     }
 }
