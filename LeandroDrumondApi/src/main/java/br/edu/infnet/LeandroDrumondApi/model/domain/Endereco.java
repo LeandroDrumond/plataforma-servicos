@@ -23,9 +23,6 @@ public class Endereco {
     @Column(name = "uf", length = 2)
     private String uf;
 
-    @Column(name = "estado", length = 80)
-    private String estado;
-
     @Column(name = "pais", length = 80)
     private String pais;
 
@@ -52,9 +49,6 @@ public class Endereco {
 
     public String getUf() { return uf; }
     public void setUf(String uf) { this.uf = uf; }
-
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
 
     public String getPais() { return pais; }
     public void setPais(String pais) { this.pais = pais; }

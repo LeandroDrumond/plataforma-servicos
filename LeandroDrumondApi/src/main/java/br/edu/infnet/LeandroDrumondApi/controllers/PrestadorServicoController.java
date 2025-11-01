@@ -2,59 +2,65 @@ package br.edu.infnet.LeandroDrumondApi.controllers;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.*;
-
 import br.edu.infnet.LeandroDrumondApi.model.domain.PrestadorServico;
 import br.edu.infnet.LeandroDrumondApi.model.domain.service.PrestadorServicoService;
-
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/prestadoreservico")
+@RequestMapping("/api/prestadores")
+
 public class PrestadorServicoController {
-	
-	private final PrestadorServicoService prestadorService;
-	
-	public PrestadorServicoController(PrestadorServicoService prestadorService ) {
-		
-		this.prestadorService = prestadorService;
-	}
-	
-	
-	@PostMapping
-	public PrestadorServico incluir (@RequestBody PrestadorServico prestadorServico ) {
-		
-		PrestadorServico prestadorIncluido = prestadorService.incluir(prestadorServico);
-		
-		return prestadorIncluido;
-		
-		
-	}
+
+    private final PrestadorServicoService prestadorServicoService;
+
+    public PrestadorServicoController(PrestadorServicoService prestadorService) {
+        this.prestadorServicoService = prestadorService;
+    }
+
+    @PostMapping
+    public ResponseEntity<PrestadorServico> incluir(@Valid @RequestBody PrestadorServico prestador) {
+
+        PrestadorServico prestadorIncluido = prestadorServicoService.incluir(prestador);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(prestadorIncluido);
+    }
 
     @PatchMapping("/{id}")
-    public PrestadorServico patch(@PathVariable Integer id,
-                                  @RequestBody PrestadorServico prestadorServico) {
-        return prestadorService.alterar(id, prestadorServico);
+    public ResponseEntity<PrestadorServico> alterar(@PathVariable Integer id,
+                                                    @RequestBody PrestadorServico prestador) {
+
+        PrestadorServico prestadorAlterado = prestadorServicoService.alterar(id, prestador);
+
+        return ResponseEntity.ok(prestadorAlterado);
     }
 
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Integer id) {
-    	
-    	prestadorService.excluir(id);
-    	
-    }
-	
-    @GetMapping
-    public List<PrestadorServico> obterLista() {
-    	
-    	return prestadorService.obterLista();
-    }
-    
-    
-    @GetMapping("/{id}")
-    public PrestadorServico obterPorId (@PathVariable Integer id) {
-    		
-    	return prestadorService.obterPorId(id);
-    	
+    public ResponseEntity<Void> excluir(@PathVariable Integer id) {
+
+        prestadorServicoService.excluir(id);
+
+        return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public ResponseEntity<List<PrestadorServico>> obterLista() {
+
+        List<PrestadorServico> lista = prestadorServicoService.obterLista();
+
+        if (lista == null || lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lista);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PrestadorServico> obterPorId(@PathVariable Integer id) {
+
+        PrestadorServico prestador = prestadorServicoService.obterPorId(id);
+
+        return ResponseEntity.ok(prestador);
+    }
 }

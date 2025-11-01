@@ -81,7 +81,6 @@ public class PrestadorServicoService implements CrudService<PrestadorServico, In
                 validaContratoNull(endereco.getBairro(),entityContatoEndereco::setBairro);
                 validaContratoNull(endereco.getCidade(),entityContatoEndereco::setCidade);
                 validaContratoNull(endereco.getUf(),entityContatoEndereco::setUf);
-                validaContratoNull(endereco.getEstado(),entityContatoEndereco::setEstado);
                 validaContratoNull(endereco.getPais(),entityContatoEndereco::setPais);
                 validaContratoNull(endereco.getComplemento(), entityContatoEndereco::setComplemento);
             }
