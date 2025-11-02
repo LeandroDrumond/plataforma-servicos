@@ -1,32 +1,31 @@
 package br.edu.infnet.LeandroDrumondApi.model.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Embeddable
 public class Contato {
 
-    @Column(name = "email", length = 120)
+    @NotBlank(message = "O e-mail é obrigatório.")
+    @Email(message = "Informe um e-mail válido.")
     private String email;
 
-    @Column(name = "telefone", length = 25)
+    @NotBlank(message = "O telefone é obrigatório.")
+    @Pattern(regexp = "\\d{10,11}", message = "O telefone deve conter entre 10 e 11 dígitos.")
     private String telefone;
 
     @Embedded
+    @Valid
     private Endereco endereco;
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
     public String getTelefone() { return telefone; }
     public void setTelefone(String telefone) { this.telefone = telefone; }
-
     public Endereco getEndereco() { return endereco; }
     public void setEndereco(Endereco endereco) { this.endereco = endereco; }
-
-    @Override
-    public String toString() {
-        String endStr = endereco != null ? endereco.toString() : "";
-        return String.format("Email: %-50s | Telefone: %-20s | Endereço: %s",
-                email == null ? "" : email, telefone == null ? "" : telefone, endStr);
-    }
 }

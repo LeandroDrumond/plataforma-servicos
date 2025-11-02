@@ -74,7 +74,7 @@ public class PrestadorServicoLoader implements ApplicationRunner  {
                 prestador.setDataAtualizacao(new Date());
                 prestador.setEspecialidades(especialidades);
 
-                prestadorServicoService.incluir(prestador);
+               // prestadorServicoService.incluir(prestador);
             }
         }
 
