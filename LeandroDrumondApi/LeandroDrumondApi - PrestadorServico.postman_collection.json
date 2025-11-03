@@ -1,0 +1,693 @@
+{
+	"info": {
+		"_postman_id": "3d522674-9e3d-42cd-beb6-3b7d53db269f",
+		"name": "LeandroDrumondApi - PrestadorServico",
+		"description": "Collection para testar todos os endpoints do PrestadorServico.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9688225"
+	},
+	"item": [
+		{
+			"name": "PrestadorServico",
+			"item": [
+				{
+					"name": "POST - Criar Prestador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"João Silva\",\n  \"cpf\": \"13958109748\",\n  \"remuneracao\": 2500.00,\n  \"ativo\": true,\n  \"especialidades\": [\"Montagem de móveis\", \"Instalação de TV\"],\n  \"contato\": {\n    \"email\": \"joao.silva@email.com\",\n    \"telefone\": \"11987654321\",\n    \"endereco\": {\n      \"cep\": \"12345678\",\n      \"logradouro\": \"Rua Do Flamengo\",\n      \"numero\": \"123\",\n      \"bairro\": \"Gavea\",\n      \"cidade\": \"Rio de Janeiro\",\n      \"uf\": \"RJ\",\n      \"pais\": \"Brasil\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH - Atualizar parcialmente",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"observacoes\": \"Agora também realiza serviços elétricos.\",\n  \"especialidades\": [\"Elétrica\", \"Montagem de móveis\"]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Listar todos Prestadores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar por ID Prestador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar por Nome Prestador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores/buscar/nome?nome=João",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores",
+								"buscar",
+								"nome"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "João"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar por Especialidade",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores/buscar/especialidade?especialidade=elétrica",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores",
+								"buscar",
+								"especialidade"
+							],
+							"query": [
+								{
+									"key": "especialidade",
+									"value": "elétrica"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar por CPF Prestador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores/buscar/cpf/12345678901",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores",
+								"buscar",
+								"cpf",
+								"12345678901"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE - Excluir Prestador",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/prestadores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"prestadores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "GET - Cadastrar Cliente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Maria Souza\",\r\n  \"cpf\": \"98765432100\",\r\n  \"observacoes\": \"Cliente preferencial.\",\r\n  \"ativo\": true,\r\n  \"contato\": {\r\n    \"email\": \"maria.souza@email.com\",\r\n    \"telefone\": \"11999998888\",\r\n    \"endereco\": {\r\n      \"cep\": \"12345000\",\r\n      \"logradouro\": \"Rua das Rosas\",\r\n      \"numero\": \"100\",\r\n      \"bairro\": \"Centro\",\r\n      \"cidade\": \"São Paulo\",\r\n      \"uf\": \"SP\",\r\n      \"pais\": \"Brasil\"\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8080/api/clientes \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"nome\": \"Maria Souza\",\r\n  \"cpf\": \"98765432100\",\r\n  \"observacoes\": \"Cliente preferencial.\",\r\n  \"ativo\": true,\r\n  \"contato\": {\r\n    \"email\": \"maria.souza@email.com\",\r\n    \"telefone\": \"11999998888\",\r\n    \"endereco\": {\r\n      \"cep\": \"12345000\",\r\n      \"logradouro\": \"Rua das Rosas\",\r\n      \"numero\": \"100\",\r\n      \"bairro\": \"Centro\",\r\n      \"cidade\": \"São Paulo\",\r\n      \"uf\": \"SP\",\r\n      \"pais\": \"Brasil\"\r\n    }\r\n  }\r\n}'\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT - Alterar Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Maria Souza Atualizada\",\r\n  \"observacoes\": \"Cliente alterada\",\r\n  \"cpf\": \"98765432100\",\r\n  \"ativo\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X PUT http://localhost:8080/api/clientes/1 \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"nome\": \"Maria Souza Atualizada\",\r\n  \"observacoes\": \"Cliente alterada\",\r\n  \"ativo\": false\r\n}'\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete - Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X DELETE http://localhost:8080/api/clientes/1\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Busca por Id Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/clientes\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Busca por CPF Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/buscar/cpf/98765432100",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"buscar",
+								"cpf",
+								"98765432100"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/clientes/buscar/cpf/98765432100\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Busca por Nome Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/buscar/nome?nome=Maria",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"buscar",
+								"nome"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "Maria"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X GET \"http://localhost:8080/api/clientes/buscar/nome?q=Maria\"\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Busca por Nome e CPF Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/buscar?nome=Maria&cpf=00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "Maria"
+								},
+								{
+									"key": "cpf",
+									"value": "00"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X GET \"http://localhost:8080/api/clientes/buscar?nome=Maria&cpf=987\"\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Busca todos Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clientes"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/clientes\r\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrdemServico",
+			"item": [
+				{
+					"name": "POST - Criar Ordem Servico",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"clienteId\": 1,\r\n  \"categoria\": \"Encanador\",\r\n  \"descricao\": \"Conserto de vazamento no banheiro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ordens",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8080/api/ordens \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"clienteId\": 1,\r\n  \"categoria\": \"Encanador\",\r\n  \"descricao\": \"Conserto de vazamento no banheiro\"\r\n}'\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post - AceitarOrdem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"prestadorId\": 1,\r\n  \"valor\": 250.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/2/aceitar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"2",
+								"aceitar"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8080/api/ordens/1/aceitar \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"prestadorId\": 3,\r\n  \"valor\": 250.00\r\n}'\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Post - IniciarOrdem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/1/iniciar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"1",
+								"iniciar"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8080/api/ordens/1/iniciar\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "POST - ConcluirOrdem",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/1/concluir",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"1",
+								"concluir"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8080/api/ordens/1/concluir\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "POST - CancelarOrdem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"motivo\": \"Cliente desistiu do serviço\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/1/cancelar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"1",
+								"cancelar"
+							]
+						},
+						"description": "Generated from cURL: curl -X POST http://localhost:8080/api/ordens/1/cancelar \\\r\n-H \"Content-Type: application/json\" \\\r\n-d '{\r\n  \"motivo\": \"Cliente desistiu do serviço\"\r\n}'\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar Ordem por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/ordens/1\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar ordem por Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/cliente/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"cliente",
+								"1"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/ordens/cliente/1\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar ordens por Prestador",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/prestador/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"prestador",
+								"3"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/ordens/prestador/3\r\n"
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Buscar ordens por Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/ordens/status/CRIADA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"ordens",
+								"status",
+								"CRIADA"
+							]
+						},
+						"description": "Generated from cURL: curl -X GET http://localhost:8080/api/ordens/status/CRIADA\r\n"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

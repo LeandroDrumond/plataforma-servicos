@@ -1,18 +1,18 @@
 package br.edu.infnet.LeandroDrumondApi.model.domain.service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.function.Consumer;
-
 import br.edu.infnet.LeandroDrumondApi.exceptions.PrestadorNaoEncontradoException;
+import br.edu.infnet.LeandroDrumondApi.interfaces.CrudService;
 import br.edu.infnet.LeandroDrumondApi.model.domain.Contato;
 import br.edu.infnet.LeandroDrumondApi.model.domain.Endereco;
+import br.edu.infnet.LeandroDrumondApi.model.domain.PrestadorServico;
+import br.edu.infnet.LeandroDrumondApi.model.repository.PrestadorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import br.edu.infnet.LeandroDrumondApi.interfaces.CrudService;
-import br.edu.infnet.LeandroDrumondApi.model.domain.PrestadorServico;
-import br.edu.infnet.LeandroDrumondApi.model.repository.PrestadorRepository;
+import java.util.Date;
+import java.util.List;
+
+import static br.edu.infnet.LeandroDrumondApi.utils.ValidacaoHelper.aplicarSeNaoNulo;
 
 @Service
 public class PrestadorServicoService implements CrudService<PrestadorServico, Integer> {
@@ -26,11 +26,27 @@ public class PrestadorServicoService implements CrudService<PrestadorServico, In
     @Override
     public PrestadorServico incluir(PrestadorServico prestador) {
 
-        Validar(prestador);
+        if (prestador.getCpf() == null || prestador.getCpf().isBlank()) {
+            throw new IllegalArgumentException("O CPF do prestador é obrigatório!");
+        }
+        if (prestadorRepository.existsByCpf(prestador.getCpf())) {
+            throw new IllegalArgumentException("Já existe um prestador cadastrado com o CPF informado: " + prestador.getCpf());
+        }
 
-        prestador.setDataInclusao(new Date());
-        prestador.setDataAtualizacao(new Date());
-        prestador.setCodigoPrestador(gerarCodigoPrestador());
+        long proximo = Long.valueOf(prestadorRepository.findMaxCodigoPrestador());
+        proximo++;
+        while (prestadorRepository.existsByCodigoPrestador(proximo)) {
+            proximo++;
+        }
+        prestador.setCodigoPrestador(proximo);
+
+        Date agora = new Date();
+        prestador.setDataInclusao(agora);
+        prestador.setDataAtualizacao(agora);
+
+        if (prestador.getAtivo() == null) {
+            prestador.setAtivo(Boolean.TRUE);
+        }
 
         return prestadorRepository.save(prestador);
     }
@@ -40,106 +56,112 @@ public class PrestadorServicoService implements CrudService<PrestadorServico, In
         return prestadorRepository.findAll();
     }
 
-
     @Override
     @Transactional
     public PrestadorServico alterar(Integer id, PrestadorServico prestador) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("O ID utilizado na alteração não pode ser nulo, zero ou negativo");
+        }
 
-        Validar(prestador);
+        PrestadorServico entity = prestadorRepository.findById(id)
+                .orElseThrow(() -> new PrestadorNaoEncontradoException("Prestador não encontrado com id: " + id));
 
-        PrestadorServico prestadorServico = prestadorRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new PrestadorNaoEncontradoException(
-                        "Prestador não encontrado com id: " + id));
+        // Se CPF vier para alterar, validar duplicidade (permitindo manter o mesmo)
+        if (prestador.getCpf() != null && !prestador.getCpf().isBlank()
+                && !prestador.getCpf().equals(entity.getCpf())) {
+            if (prestadorRepository.existsByCpf(prestador.getCpf())) {
+                throw new IllegalArgumentException("Já existe um prestador cadastrado com o CPF informado: " + prestador.getCpf());
+            }
+            entity.setCpf(prestador.getCpf());
+        }
 
-        validaContratoNull(prestador.getNome(),prestadorServico::setNome);
-        validaContratoNull(prestador.getRemuneracao(),prestadorServico::setRemuneracao);
-        validaContratoNull(prestador.getObservacoes(),prestadorServico::setObservacoes);
-        validaContratoNull(prestador.getEspecialidades(),prestadorServico::setEspecialidades);
-        validaContratoNull(prestador.getAtivo(), prestadorServico::setAtivo);
+        aplicarSeNaoNulo(prestador.getNome(), entity::setNome);
+        aplicarSeNaoNulo(prestador.getRemuneracao(), entity::setRemuneracao);
+        aplicarSeNaoNulo(prestador.getObservacoes(), entity::setObservacoes);
+        aplicarSeNaoNulo(prestador.getEspecialidades(), entity::setEspecialidades);
+        aplicarSeNaoNulo(prestador.getAtivo(), entity::setAtivo);
 
         if (prestador.getContato() != null) {
-            if (prestadorServico.getContato() == null) {
-                prestadorServico.setContato(new Contato());
+            if (entity.getContato() == null) {
+                entity.setContato(new Contato());
             }
+            var prestadorContato = prestador.getContato();
+            var entityContato = entity.getContato();
 
-            var contato = prestador.getContato();
-            var entityContato = prestadorServico.getContato();
+            aplicarSeNaoNulo(prestadorContato.getEmail(), entityContato::setEmail);
+            aplicarSeNaoNulo(prestadorContato.getTelefone(), entityContato::setTelefone);
 
-            validaContratoNull(contato.getEmail(),entityContato::setEmail);
-            validaContratoNull(contato.getTelefone(), entityContato::setTelefone);
-
-            if (contato.getEndereco() != null) {
+            if (prestadorContato.getEndereco() != null) {
                 if (entityContato.getEndereco() == null) {
                     entityContato.setEndereco(new Endereco());
                 }
-                var endereco = contato.getEndereco();
-                var entityContatoEndereco = entityContato.getEndereco();
+                var endIn = prestadorContato.getEndereco();
+                var endEn = entityContato.getEndereco();
 
-                validaContratoNull(endereco.getCep(),entityContatoEndereco::setCep);
-                validaContratoNull(endereco.getLogradouro(),entityContatoEndereco::setLogradouro);
-                validaContratoNull(endereco.getNumero(),entityContatoEndereco::setNumero);
-                validaContratoNull(endereco.getBairro(),entityContatoEndereco::setBairro);
-                validaContratoNull(endereco.getCidade(),entityContatoEndereco::setCidade);
-                validaContratoNull(endereco.getUf(),entityContatoEndereco::setUf);
-                validaContratoNull(endereco.getPais(),entityContatoEndereco::setPais);
-                validaContratoNull(endereco.getComplemento(), entityContatoEndereco::setComplemento);
+                aplicarSeNaoNulo(endIn.getCep(), endEn::setCep);
+                aplicarSeNaoNulo(endIn.getLogradouro(), endEn::setLogradouro);
+                aplicarSeNaoNulo(endIn.getNumero(), endEn::setNumero);
+                aplicarSeNaoNulo(endIn.getBairro(), endEn::setBairro);
+                aplicarSeNaoNulo(endIn.getCidade(), endEn::setCidade);
+                aplicarSeNaoNulo(endIn.getUf(), endEn::setUf);
+                aplicarSeNaoNulo(endIn.getPais(), endEn::setPais);
+                aplicarSeNaoNulo(endIn.getComplemento(), endEn::setComplemento);
             }
         }
 
-        prestadorServico.setDataAtualizacao(new Date());
+        entity.setDataAtualizacao(new Date());
 
-        if (prestadorServico.getDataInclusao() == null) {
-            prestadorServico.setDataInclusao(new Date());
+        if (entity.getDataInclusao() == null) {
+            entity.setDataInclusao(new Date());
         }
 
-        return prestadorRepository.save(prestadorServico);
+        return prestadorRepository.save(entity);
     }
 
-
     @Override
-	public void excluir(Integer id) {
+    public void excluir(Integer id) {
 
-        PrestadorServico prestadorServico = prestadorRepository.findById(Long.valueOf(id))
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("O ID utilizado na exclusão não pode ser nulo, zero ou negativo");
+        }
+        PrestadorServico entity = prestadorRepository.findById(id)
                 .orElseThrow(() -> new PrestadorNaoEncontradoException("Prestador não encontrado com id: " + id));
-
-        prestadorRepository.delete(prestadorServico);
-		
-	}
+        prestadorRepository.delete(entity);
+    }
 
     @Override
     public PrestadorServico obterPorId(Integer id) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("O ID utilizado na busca do prestador não pode ser nulo, zero ou negativo");
         }
-
-        return prestadorRepository.findById(Long.valueOf(id))
-                .orElseThrow(() -> new PrestadorNaoEncontradoException(
-                        "Prestador não encontrado com id: " + id));
+        return prestadorRepository.findById(id)
+                .orElseThrow(() -> new PrestadorNaoEncontradoException("Prestador não encontrado com id: " + id));
     }
 
-    private Long gerarCodigoPrestador() {
-        long proximo = prestadorRepository.findMaxCodigoPrestador() + 1;
+    // --------- Consultas auxiliares (usando métodos do repository) ---------
 
-        while (prestadorRepository.existsByCodigoPrestador(proximo)) {
-            proximo++;
+    public PrestadorServico buscarPorCpf(String cpf) {
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException("O CPF para busca não pode ser nulo ou vazio.");
         }
-        return proximo;
+        return prestadorRepository.findByCpf(cpf)
+                .orElseThrow(() -> new PrestadorNaoEncontradoException("Prestador não encontrado para o CPF: " + cpf));
     }
 
-    private static <T> void validaContratoNull(T value, Consumer<T> setter) {
-        if (value != null) setter.accept(value);
+    public List<PrestadorServico> buscarAtivosPorNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome para busca não pode ser nulo ou vazio.");
+        }
+        return prestadorRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(nome);
     }
 
-    private void Validar(PrestadorServico prestador) {
-
-        if (prestador == null) {
-            throw new IllegalArgumentException("O prestador não pode estar nulo!");
+    public List<PrestadorServico> buscarPorEspecialidade(String especialidade) {
+        if (especialidade == null || especialidade.isBlank()) {
+            throw new IllegalArgumentException("A especialidade para busca não pode ser nula ou vazia.");
         }
-        if (prestador.getNome() == null || prestador.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do prestador é obrigatório!");
-        }
-        if (prestador.getId() != null) {
-            throw new IllegalArgumentException("Novo prestador não pode ter ID preenchido!");
-        }
+        return prestadorRepository.searchByEspecialidade(especialidade);
     }
+
+
+
 }
